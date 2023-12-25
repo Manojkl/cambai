@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: torchserve-deployment
+spec:
+  replicas: 1  # Adjust replicas as needed
+  selector:
+    matchLabels:
+      app: torchserve
+  template:
+    metadata:
+      labels:
+        app: torchserve
+    spec:
+      volumes:
+        - name: model-store
+          hostPath:
+            path: /home/manoj/Documents/cambai/torchserve/serve/model_store  # Replace with your host path
+      containers:
+        - name: torchserve
+          image: manojkolpe/torchserve:1.0  # Replace with compatible image
+          ports:
+            - containerPort: 8080
+            - containerPort: 8081
+          volumeMounts:
+            - name: model-store
+              mountPath: /home/model-server/model-store
